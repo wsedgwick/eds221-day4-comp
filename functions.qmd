@@ -1,0 +1,94 @@
+---
+title: "functions"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+## Functions
+
+```{r}
+
+double_this <- function(my_value) {
+  print(2 * my_value)
+}
+
+double_this(my_value = 10)
+
+double_this(c(1, 5, 7, 4, 54))
+
+name_age <- function(name, age) {
+  print(paste("My name is", name, "and I'm", age, "years old."))
+}
+
+name_age(name = "Wade", age = 28)
+
+```
+
+
+```{r}
+
+
+convert_animal_age <- function(animal, human_age) {
+  if (animal == "dog") {
+    print(human_age * 7)
+  } else if (animal == "goat") {
+    print(human_age * 4.7)
+  } else {
+    print("Not the right animal!")
+  }
+}
+
+convert_animal_age(animal = "dog", human_age = 2)
+convert_animal_age(animal = "goat", human_age = 5)
+convert_animal_age(animal = "blue whale", human_age = 5)
+
+```
+
+
+```{r}
+
+dog_choice <- tribble(
+  ~dog_name, ~food,
+  "Khora", "Everything",
+  "Teddy", "Waffles",
+  "Buta", "Bark"
+)
+
+dog_name <- function(name) {
+  my_sub <- filter(dog_choice, dog_name == name)
+  print(paste("My name is", my_sub$dog_name, "and my favorite food is", my_sub$food))
+}
+
+dog_name(name = "Buta")
+
+
+means_over_columns <- function(df) {
+  for(i in seq_along(df)) {
+    col_mean <- mean(df[[i]], na.rm = TRUE)
+    column_name <- colnames(df[i])
+    print(paste("The mean of", column_name, "is", col_mean))
+  }
+}
+
+means_over_columns(df = penguins)
+# The mean of 'col name' is '#'
+
+means_over_columns(df = mtcars)
+
+means_over_columns(df = faithful)
+
+
+
+```
+
+
+
+
+
+
