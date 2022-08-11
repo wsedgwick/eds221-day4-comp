@@ -8,6 +8,8 @@ editor: visual
 
 ```{r}
 
+library(tidyverse)
+
 quarter_splits <- c(1.0, 1.1, 1.2, 1.1, 1.4, 1.5, 1.6, 1.5)
 
 for(i in seq_along(quarter_splits)) {
@@ -86,7 +88,111 @@ for (i in 1:length(r_seq)) {
   }
 }
 
+```
 
+Command Option X - p
+
+
+
+```{r}
+
+
+logistic_growth <- function(K, N0, r, time) {
+K / (1 + ((K - N0) / N0) * exp(- r * time))
+}
+
+logistic_growth()
+
+```
+
+
+```{r}
+
+time_vec <- seq(from = 0, to = 35, by = 0.1)
+
+pop_35 <- logistic_growth(N0 = 4, r = 0.8, K = 3000, time = time_vec)
+
+
+pop_35_df <- data.frame(time_vec, pop_35)
+
+ggplot(data = pop_35_df, aes(x = time_vec, y = pop_35)) +
+  geom_point()
+
+
+pop_35_vec <- vector(mode = "numeric", length = length(time_vec))
+
+for(i in seq_along(time_vec)) {
+  population <- logistic_growth(N0 = 100, K = 1000, r = 0.27, time = time_vec[i])
+  pop_35_vec[i] < population
+}
+
+```
+
+## Iterate over multiple growth rates
+
+```{r}
+
+r_seq <- seq(from = 0.2, to = 0.4, by = 0.01)
+
+```
+
+```{r}
+
+out_matrix <- matrix(nrow = length(time_vec), ncol = length(r_seq))
+
+for (i in seq_along(r_seq)) {
+  for (j in seq_along(time_vec)) {
+    pop <- logistic_growth(N0 = 100, K = 6000, r = r_seq[i], time = time_vec[j])
+    out_matrix[j, i] <- pop
+  }
+}
+
+### Now some wrangling
+
+logistic_df <- data.frame(out_matrix, time = time_vec)
+
+# changing column names
+
+colnames(logistic_df) <- c(paste0("gr_", r_seq), "time")
+
+# Don't want to repeat time, just population
+
+logistic_df_long <- logistic_df %>%
+  pivot_longer(cols = -time, values_to = "population", names_to = "growth_rate")
+
+ggplot(data = logistic_df_long, aes(x = time, y = population)) +
+  geom_line(aes(color = growth_rate))
+
+
+```
+
+
+Use `warning` to add a warning
+Use `stop` to add an error
+P=0.3\rho A v^3
+
+  
+  rho air density(kg / m ^3)
+A area covered by turbine(meters)
+x wind velocity(m/s)
+
+```{r}
+
+Air density <- function(rho, r, wind_speed) {
+  (0.3 * rho * 3.14 * r ^ 2) * (wind_speed)
+}
+
+if (windspeed > 30) {
+  
+}
+
+if (rho > 1.25) {
+  warning("That air density is suspicious")
+}
+
+if (radius < 0) {
+  stop("Rotor radius must be positive")
+}
 
 ```
 
