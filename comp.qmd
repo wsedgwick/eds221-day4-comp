@@ -15,6 +15,83 @@ for(i in seq_along(quarter_splits)) {
   print(val)
 }
 
+```
+
+```{r}
+
+animal_age <- function(animal, age) {
+  if (animal == "dog") {
+    print(age * 7)
+  } else if (animal == "goat") {
+    print(age * 4.7)
+  }
+}
+
+animal_age("dog", 2.3)
+
 
 ```
+
+```{r}
+
+colors <- c("blue", "green", "red")
+cars <- c("ferrari", "ford", "fiat", "audi")
+
+
+fruit_out <- matrix(nrow = length(cars), ncol = length(colors))
+
+for(i in seq_along(cars)) {
+  for(j in seq_along(colors)) {
+    total_cars <- paste(colors[i], cars[j])
+    cars[i,j] <- total_cars
+  }
+}
+```
+
+# Automate estimating population size over a range of times, and at multiple growth rates
+
+```{r}
+out_matrix = matrix()
+
+growth <- function(rate, time) {
+  for(i in seq_along(rate)) {
+    for(j in seq_along(time)) {
+      calc_logistic (for i over all j)
+      store calc_population in out_matrix
+    }
+  }
+}
+
+time_vec <- seq(0, 30, 0.1)
+
+prop_35_vec <- vector(mode = "numeric", length = length(time_vec))
+
+logistic_growth <- function(N0, K, r, time) {
+  Nt <- K / (1 + ((K - N0) / N0) * exp(-r * time))
+  print(Nt)
+}
+
+r_seq <- seq(from = 0.20,to = 0.40,by = 0.01)
+
+out_matrix <- matrix(nrow = length(time_vec), ncol = length(r_seq))
+
+
+for (i in 1:length(r_seq)) {
+  for (j in 1:length(time_vec)) { # Inner loop is growth rates
+    pop <- logistic_growth(N0 = 100, 
+                           K = 6000, 
+                           r = r_seq[i], 
+                           time = time_vec[j])
+    out_matrix[j, i] <- pop
+  }
+}
+
+
+
+```
+
+
+
+
+
 
